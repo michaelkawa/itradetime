@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Watch Cartel — private deal-flow network for watch traders</title>
+<meta name="description" content="A private, application-only deal-flow network for serious watch traders. Live WTB / ISO / FS flow, vetted counterparties, and sourcing handled by a desk that confirms availability before it offers anything.">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Watch Cartel — private deal-flow network for watch traders">
+<meta property="og:description" content="Live WTB / ISO / FS flow, vetted counterparties, real spreads. By application only.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://itradetime.com/">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230a0a0b'/><circle cx='50' cy='50' r='34' fill='none' stroke='%23c9a961' stroke-width='6'/><path d='M50 30 V52 L64 60' stroke='%23c9a961' stroke-width='6' fill='none' stroke-linecap='round'/></svg>">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#0a0a0b; --bg-2:#101012; --panel:#131316; --line:#26262b;
+    --ink:#f2f0ec; --ink-2:#a7a49e; --ink-3:#75726d;
+    --gold:#c9a961; --gold-dim:#8c7642;
+    --serif:ui-serif,Georgia,"Iowan Old Style","Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --wrap:1080px;
+  }
+  html{-webkit-text-size-adjust:100%}
+  body{
+    background:var(--bg); color:var(--ink); font-family:var(--sans);
+    font-size:17px; line-height:1.65; -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  img{max-width:100%;height:auto;display:block}
+  a{color:inherit}
+  .wrap{width:100%;max-width:var(--wrap);margin:0 auto;padding:0 22px}
+
+  /* ---------- header ---------- */
+  header{position:sticky;top:0;z-index:50;background:rgba(10,10,11,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 22px}
+  .mark{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+  .mark .dial{width:24px;height:24px;border:1.5px solid var(--gold);border-radius:50%;position:relative;flex-shrink:0}
+  .mark .dial::after{content:"";position:absolute;left:50%;top:22%;width:1.5px;height:32%;background:var(--gold);transform-origin:bottom}
+  .mark .dial::before{content:"";position:absolute;left:50%;top:50%;width:28%;height:1.5px;background:var(--gold);transform-origin:left}
+  .mark span{font-family:var(--serif);font-size:17px;letter-spacing:.14em;text-transform:uppercase}
+  .navlinks{display:flex;align-items:center;gap:22px}
+  .navlinks a{font-size:13px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-2);text-decoration:none;transition:color .18s}
+  .navlinks a:hover{color:var(--ink)}
+  .navlinks a.cta{color:var(--gold);border:1px solid var(--gold-dim);padding:7px 14px;border-radius:2px}
+  .navlinks a.cta:hover{background:var(--gold);color:#0a0a0b}
+  @media(max-width:700px){ .navlinks .hide-sm{display:none} }
+  @media(max-width:640px){
+    .wrap{padding:0 18px}
+    .nav{gap:8px;padding:14px 18px}
+    .mark{gap:8px} .mark span{font-size:13.5px;letter-spacing:.1em}
+    .mark .dial{width:21px;height:21px}
+    .navlinks{gap:12px}
+    .navlinks a{font-size:11.5px;letter-spacing:.07em}
+    .navlinks a.cta{padding:6px 11px}
+  }
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;padding:84px 0 74px;border-bottom:1px solid var(--line);overflow:hidden}
+  .hero::before{
+    content:"";position:absolute;inset:-40% -20% auto -20%;height:120%;
+    background:radial-gradient(60% 55% at 50% 0%, rgba(201,169,97,.10) 0%, rgba(201,169,97,0) 70%);
+    pointer-events:none;
+  }
+  .hero .wrap{position:relative}
+  .eyebrow{
+    font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);
+    display:flex;align-items:center;gap:10px;margin-bottom:26px;flex-wrap:wrap
+  }
+  .eyebrow::before{content:"";width:34px;height:1px;background:var(--gold-dim);flex-shrink:0}
+  h1{
+    font-family:var(--serif);font-weight:400;letter-spacing:-.015em;line-height:1.1;
+    font-size:clamp(34px,7.2vw,60px);max-width:16ch;margin-bottom:22px;
+  }
+  h1 em{font-style:italic;color:var(--gold)}
+  .lede{font-size:clamp(16.5px,2.4vw,19.5px);color:var(--ink-2);max-width:56ch;line-height:1.6}
+  .btnrow{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+  .btn{
+    display:inline-block;text-decoration:none;font-size:14px;letter-spacing:.08em;text-transform:uppercase;
+    padding:14px 26px;border-radius:2px;border:1px solid transparent;transition:all .18s;
+  }
+  .btn-primary{background:var(--gold);color:#0a0a0b;font-weight:600}
+  .btn-primary:hover{background:#dcbe79}
+  .btn-ghost{border-color:var(--line);color:var(--ink-2)}
+  .btn-ghost:hover{border-color:var(--ink-3);color:var(--ink)}
+  .hero-note{margin-top:24px;font-size:13.5px;color:var(--ink-3)}
+
+  /* ---------- ticker strip ---------- */
+  .strip{border-bottom:1px solid var(--line);background:var(--bg-2);overflow:hidden}
+  .strip-inner{display:flex;gap:0;flex-wrap:wrap}
+  .code{
+    flex:1 1 140px;padding:20px 22px;border-right:1px solid var(--line);
+  }
+  .code:last-child{border-right:0}
+  .code b{display:block;font-family:var(--serif);font-size:20px;color:var(--gold);letter-spacing:.06em}
+  .code span{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-top:4px}
+  @media(max-width:640px){ .code{flex:1 1 50%;border-bottom:1px solid var(--line)} .code:nth-child(2n){border-right:0} }
+
+  /* ---------- sections ---------- */
+  section{padding:72px 0;border-bottom:1px solid var(--line)}
+  .sec-label{font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-3);margin-bottom:18px}
+  h2{font-family:var(--serif);font-weight:400;font-size:clamp(26px,4.6vw,38px);line-height:1.2;letter-spacing:-.01em;max-width:22ch}
+  h2 + .sub{margin-top:16px;color:var(--ink-2);max-width:60ch}
+  h3{font-family:var(--serif);font-weight:400;font-size:21px;letter-spacing:.01em;margin-bottom:9px}
+
+  .grid{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:38px;border-radius:3px;overflow:hidden}
+  .grid.three{grid-template-columns:repeat(auto-fit,minmax(255px,1fr))}
+  .cell{background:var(--panel);padding:28px 24px}
+  .cell p{color:var(--ink-2);font-size:15.5px}
+  .cell .n{font-size:11.5px;letter-spacing:.2em;color:var(--gold);margin-bottom:14px}
+
+  /* steps */
+  .steps{margin-top:38px;border-top:1px solid var(--line)}
+  .step{display:flex;gap:20px;padding:24px 0;border-bottom:1px solid var(--line);align-items:flex-start}
+  .step .num{
+    font-family:var(--serif);font-size:15px;color:var(--gold);border:1px solid var(--gold-dim);
+    width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px
+  }
+  .step .body h3{margin-bottom:5px}
+  .step .body p{color:var(--ink-2);font-size:15.5px;max-width:62ch}
+
+  /* rules list */
+  .rules{margin-top:34px;display:grid;gap:14px}
+  .rule{display:flex;gap:14px;align-items:flex-start;padding:16px 18px;background:var(--panel);border:1px solid var(--line);border-left:2px solid var(--gold-dim);border-radius:2px}
+  .rule .tick{color:var(--gold);font-size:15px;line-height:1.6;flex-shrink:0}
+  .rule p{font-size:15.5px;color:var(--ink-2)}
+  .rule p b{color:var(--ink);font-weight:600}
+
+  /* membership */
+  .member{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:38px;border-radius:3px;overflow:hidden;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+  .tier{background:var(--panel);padding:32px 26px}
+  .tier.feature{background:linear-gradient(180deg,#17150f 0%,var(--panel) 60%)}
+  .tier .kicker{font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+  .tier ul{list-style:none;margin-top:18px;display:grid;gap:10px}
+  .tier li{font-size:15px;color:var(--ink-2);padding-left:18px;position:relative}
+  .tier li::before{content:"—";position:absolute;left:0;color:var(--gold-dim)}
+  .tier .price{font-family:var(--serif);font-size:17px;color:var(--ink);margin-top:20px;padding-top:18px;border-top:1px solid var(--line)}
+
+  /* who */
+  .who{display:grid;gap:28px;grid-template-columns:1fr;margin-top:34px}
+  @media(min-width:760px){ .who{grid-template-columns:1.15fr 1fr;gap:44px} }
+  .who p{color:var(--ink-2);margin-bottom:14px}
+  .who .card{background:var(--panel);border:1px solid var(--line);padding:26px 24px;border-radius:3px;align-self:start}
+  .who .card dt{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);margin-bottom:4px}
+  .who .card dd{font-size:15.5px;margin-bottom:18px}
+  .who .card dd:last-child{margin-bottom:0}
+
+  /* closing cta */
+  .close-cta{padding:82px 0;text-align:center;border-bottom:1px solid var(--line);background:
+    radial-gradient(70% 100% at 50% 100%, rgba(201,169,97,.09) 0%, rgba(201,169,97,0) 70%)}
+  .close-cta h2{margin:0 auto;max-width:20ch}
+  .close-cta .sub{margin:16px auto 0}
+  .close-cta .btnrow{justify-content:center}
+
+  footer{padding:40px 0 56px;color:var(--ink-3);font-size:13.5px}
+  .foot{display:flex;flex-wrap:wrap;gap:16px 26px;justify-content:space-between;align-items:center}
+  .foot a{color:var(--ink-3);text-decoration:none}
+  .foot a:hover{color:var(--ink-2)}
+  .disclaimer{margin-top:22px;font-size:12.5px;color:#5c5a56;max-width:78ch;line-height:1.6}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="mark" href="index.html"><span class="dial"></span><span>Watch Cartel</span></a>
+    <nav class="navlinks">
+      <a class="hide-sm" href="index.html#how">How it works</a>
+      <a href="proof.html">Standards</a>
+      <a class="cta" href="apply.html">Apply</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <p class="eyebrow">By application only</p>
+    <h1>The deal moves before it is <em>ever</em> posted publicly.</h1>
+    <p class="lede">Watch Cartel is a private deal-flow network for serious traders. Live WTB, ISO and FS flow between vetted counterparties — plus a desk that will actually source the reference you are hunting, and confirm it is available before it says a word to you.</p>
+    <div class="btnrow">
+      <a class="btn btn-primary" href="apply.html">Apply for a seat</a>
+      <a class="btn btn-ghost" href="https://whop.com/checkout/plan_fHTNpBv08YRMx">Join now — $1,000/yr</a>
+      <a class="btn btn-ghost" href="https://whop.com/checkout/plan_fHTNpBv08YRMx">Join now — $1,000/yr</a>
+    </div>
+    <p class="hero-note">Applications are reviewed individually. Not everyone gets in — that is the entire point.</p>
+  </div>
+</div>
+
+<div class="strip">
+  <div class="wrap">
+    <div class="strip-inner">
+      <div class="code"><b>FS</b><span>For sale · real supply</span></div>
+      <div class="code"><b>WTB</b><span>Want to buy · real demand</span></div>
+      <div class="code"><b>ISO</b><span>In search of · serious</span></div>
+      <div class="code"><b>NTQ</b><span>Need to quote · noise</span></div>
+    </div>
+  </div>
+</div>
+
+<section id="what">
+  <div class="wrap">
+    <p class="sec-label">What it is</p>
+    <h2>A room, a desk, and a standard.</h2>
+    <p class="sub">Three things, and nothing else. There is no app to learn, no feed to scroll, and no course to buy.</p>
+
+    <div class="grid three">
+      <div class="cell">
+        <p class="n">01</p>
+        <h3>The room</h3>
+        <p>Curated dealer flow — what is genuinely for sale and who is genuinely buying, moving in real time. Price-discovery chatter is filtered out before it reaches you, because a dealer asking to be quoted is not a dealer selling.</p>
+      </div>
+      <div class="cell">
+        <p class="n">02</p>
+        <h3>The desk</h3>
+        <p>Tell us the reference you need and we work the network for it. If it surfaces, you hear about it first. If it does not, you hear that too — quickly, so you can go somewhere else instead of waiting on a maybe.</p>
+      </div>
+      <div class="cell">
+        <p class="n">03</p>
+        <h3>The standard</h3>
+        <p>Condition, accessories, card date, aftermarket parts and who carries the shipping risk all change the number. We say which ones apply to every piece we put in front of you, every time.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <p class="sec-label">How it works</p>
+    <h2>Four steps. No calls, no pitch decks.</h2>
+
+    <div class="steps">
+      <div class="step">
+        <div class="num">1</div>
+        <div class="body">
+          <h3>You apply</h3>
+          <p>A short form: who you are, what you trade, and roughly how much of it you move in a year. Two minutes.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="num">2</div>
+        <div class="body">
+          <h3>We vet you</h3>
+          <p>Reputation is the whole asset in a market this small, so the door is the product. If you are not a fit we say so plainly rather than taking your money and disappointing you later.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="num">3</div>
+        <div class="body">
+          <h3>You get the sheet</h3>
+          <p>Approved applicants receive the full network sheet, the membership terms, and access. Membership runs annually and is priced at approval — no public price list, and no negotiating against the person who joined last week.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="num">4</div>
+        <div class="body">
+          <h3>You trade</h3>
+          <p>Post what you have, say what you are hunting, and use the desk when you want a reference sourced rather than waiting for it to appear. Sourcing fees are quoted upfront, per deal, before any work starts.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="never">
+  <div class="wrap">
+    <p class="sec-label">The non-negotiables</p>
+    <h2>What this desk will never do.</h2>
+    <p class="sub">Most of what goes wrong in this trade goes wrong for the same handful of reasons. These are ours, in writing, before you have paid anything.</p>
+
+    <div class="rules">
+      <div class="rule"><span class="tick">&#10007;</span><p><b>We will never tell you we have it.</b> Before a watch that is not ours is offered to you, it is confirmed available. Listings in this market go stale in hours; relaying one as offerable is how brokers burn a reputation they only get to burn once.</p></div>
+      <div class="rule"><span class="tick">&#10007;</span><p><b>We will never compare two prices that are not comparable.</b> BNIB is not "like new," and "retail ready" means polished to look better than it is. Full set and watch-only are two different assets. If a comparison crosses those lines, we say so instead of quietly showing you a spread that is not there.</p></div>
+      <div class="rule"><span class="tick">&#10007;</span><p><b>We will never count quote-chasing as supply.</b> NTQ and LTQ are price discovery, not offers, and they are excluded from every number we give you. Counting them inflates apparent supply and invents spreads that do not exist.</p></div>
+      <div class="rule"><span class="tick">&#10007;</span><p><b>We will never expose the members.</b> No public member list, no screenshots of your deals, no forwarding your ask around the market with your name attached. Discretion is not a feature here, it is the container.</p></div>
+      <div class="rule"><span class="tick">&#10007;</span><p><b>We will never push you past a payment you can recover.</b> Escrow or a protected rail on anything that warrants it, deposits before travel, and no fronting money into a handshake. That advice costs us deals and we give it anyway.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="membership">
+  <div class="wrap">
+    <p class="sec-label">Membership</p>
+    <h2>Annual. Application only. Priced at approval.</h2>
+    <p class="sub">Access is sold once a year, to people we have vetted. Seats are approved in small batches so the flow stays worth reading and the room stays worth being in.</p>
+
+    <div class="member">
+      <div class="tier feature">
+        <p class="kicker">The membership</p>
+        <h3>Full network access</h3>
+        <ul>
+          <li>Live WTB / ISO / FS flow</li>
+          <li>The desk on anything you are hunting or selling</li>
+          <li>A straight read on price, condition and accessories before you commit</li>
+          <li>Introductions to vetted counterparties inside the network</li>
+        </ul>
+        <p class="price">$1,000 / year. Founding seats open now.</p>
+        <a class="btn btn-primary" href="https://whop.com/checkout/plan_fHTNpBv08YRMx" style="margin-top:14px;display:inline-block">Join — $1,000/yr</a>
+        <p style="margin-top:10px;font-size:14px;color:var(--ink-3)">Prefer to be vetted first? <a href="apply.html" style="color:var(--gold)">Apply for a seat</a> and we will send terms on approval.</p>
+      </div>
+      <div class="tier">
+        <p class="kicker">Whale desk</p>
+        <h3>Concierge sourcing</h3>
+        <ul>
+          <li>Priority on every match the desk finds</li>
+          <li>Direct line, not a queue</li>
+          <li>Active sourcing against your hunt list</li>
+          <li>Strictly limited number of seats</li>
+        </ul>
+        <p class="price">By invitation. Priced individually.</p>
+      </div>
+      <div class="tier">
+        <p class="kicker">Brokerage</p>
+        <h3>Deal by deal</h3>
+        <ul>
+          <li>You name the reference; we work the network</li>
+          <li>Availability confirmed before anything is offered to you</li>
+          <li>Fee agreed upfront, in writing, per deal</li>
+          <li>Open to members and to vetted non-members</li>
+        </ul>
+        <p class="price">Quoted per deal, before work starts.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="who">
+  <div class="wrap">
+    <p class="sec-label">Who runs it</p>
+    <h2>One operator, one reputation on the line.</h2>
+    <div class="who">
+      <div>
+        <p>Watch Cartel is operated by Michael Kawa, a Florida-based trader who owns and runs private watch groups and brokers deals between the dealers inside them. This is not a media brand or an affiliate funnel — the person writing the rules on this page is the person you will be dealing with.</p>
+        <p>The business earns two ways, and both are disclosed here so there are no surprises later: an annual membership for access to the network, and a sourcing fee on deals the desk brokers, agreed in advance. There is no hidden markup dressed up as a favour, and no undisclosed commission on both sides of the same trade.</p>
+        <p>Everything on this page is what we do today. When something changes, this page changes.</p>
+      </div>
+      <dl class="card">
+        <dt>Operator</dt><dd>Michael Kawa</dd>
+        <dt>Base</dt><dd>South Florida &middot; trading internationally</dd>
+        <dt>Access</dt><dd>Private groups, by application</dd>
+        <dt>Also from this desk</dt><dd><a href="https://swatchstocks.com" style="color:var(--gold);text-decoration:none;border-bottom:1px solid var(--gold-dim)">swatchstocks.com</a> — our public market notes on the Swatch collaborations</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<div class="close-cta">
+  <div class="wrap">
+    <p class="sec-label">Next step</p>
+    <h2>Tell us what you trade.</h2>
+    <p class="sub">Two minutes. If it is a fit you will hear back with the sheet and the terms. If it is not, you will hear that instead of nothing.</p>
+    <div class="btnrow">
+      <a class="btn btn-primary" href="apply.html">Apply for a seat</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>&copy; <span id="yr">2026</span> Watch Cartel &middot; itradetime.com</div>
+      <div style="display:flex;gap:20px;flex-wrap:wrap">
+        <a href="index.html">Home</a>
+        <a href="proof.html">Standards</a>
+        <a href="apply.html">Apply</a>
+        <a href="https://swatchstocks.com">Swatch Stocks</a>
+      </div>
+    </div>
+    <p class="disclaimer">Watch Cartel is an independent private trading network and brokerage. We are not an authorized dealer for, and are not affiliated with, sponsored by or endorsed by, any watch manufacturer or brand. Brand and reference names are used for identification only. Nothing on this site is an offer to sell a specific watch, a guarantee of availability, or investment advice — watches are collectibles, not securities, and their values move.</p>
+  </div>
+</footer>
+
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>

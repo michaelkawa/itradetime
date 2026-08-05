@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Standards &amp; glossary — Watch Cartel</title>
+<meta name="description" content="How Watch Cartel vets a deal: the intent codes, the condition ladder, what actually moves the price, and the rule we never break — availability is confirmed before anything is offered.">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230a0a0b'/><circle cx='50' cy='50' r='34' fill='none' stroke='%23c9a961' stroke-width='6'/><path d='M50 30 V52 L64 60' stroke='%23c9a961' stroke-width='6' fill='none' stroke-linecap='round'/></svg>">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#0a0a0b; --bg-2:#101012; --panel:#131316; --line:#26262b;
+    --ink:#f2f0ec; --ink-2:#a7a49e; --ink-3:#75726d;
+    --gold:#c9a961; --gold-dim:#8c7642;
+    --serif:ui-serif,Georgia,"Iowan Old Style","Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --wrap:1080px;
+  }
+  html{-webkit-text-size-adjust:100%}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit}
+  .wrap{width:100%;max-width:var(--wrap);margin:0 auto;padding:0 22px}
+
+  header{position:sticky;top:0;z-index:50;background:rgba(10,10,11,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 22px}
+  .mark{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+  .mark .dial{width:24px;height:24px;border:1.5px solid var(--gold);border-radius:50%;position:relative;flex-shrink:0}
+  .mark .dial::after{content:"";position:absolute;left:50%;top:22%;width:1.5px;height:32%;background:var(--gold)}
+  .mark .dial::before{content:"";position:absolute;left:50%;top:50%;width:28%;height:1.5px;background:var(--gold)}
+  .mark span{font-family:var(--serif);font-size:17px;letter-spacing:.14em;text-transform:uppercase}
+  .navlinks{display:flex;align-items:center;gap:22px}
+  .navlinks a{font-size:13px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-2);text-decoration:none;transition:color .18s}
+  .navlinks a:hover{color:var(--ink)}
+  .navlinks a.cta{color:var(--gold);border:1px solid var(--gold-dim);padding:7px 14px;border-radius:2px}
+  .navlinks a.cta:hover{background:var(--gold);color:#0a0a0b}
+  @media(max-width:700px){ .navlinks .hide-sm{display:none} }
+  @media(max-width:640px){
+    .wrap{padding:0 18px}
+    .nav{gap:8px;padding:14px 18px}
+    .mark{gap:8px} .mark span{font-size:13.5px;letter-spacing:.1em}
+    .mark .dial{width:21px;height:21px}
+    .navlinks{gap:12px}
+    .navlinks a{font-size:11.5px;letter-spacing:.07em}
+    .navlinks a.cta{padding:6px 11px}
+  }
+
+  .pagehead{padding:70px 0 56px;border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+  .pagehead::before{content:"";position:absolute;inset:-50% -20% auto -20%;height:120%;background:radial-gradient(55% 55% at 50% 0%, rgba(201,169,97,.09) 0%, rgba(201,169,97,0) 70%);pointer-events:none}
+  .pagehead .wrap{position:relative}
+  .eyebrow{font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:10px;margin-bottom:24px}
+  .eyebrow::before{content:"";width:34px;height:1px;background:var(--gold-dim);flex-shrink:0}
+  h1{font-family:var(--serif);font-weight:400;letter-spacing:-.015em;line-height:1.12;font-size:clamp(31px,6.2vw,52px);max-width:18ch;margin-bottom:20px}
+  h1 em{font-style:italic;color:var(--gold)}
+  .lede{font-size:clamp(16px,2.3vw,19px);color:var(--ink-2);max-width:60ch}
+
+  section{padding:66px 0;border-bottom:1px solid var(--line)}
+  .sec-label{font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-3);margin-bottom:18px}
+  h2{font-family:var(--serif);font-weight:400;font-size:clamp(25px,4.4vw,35px);line-height:1.2;letter-spacing:-.01em;max-width:24ch}
+  h2 + .sub{margin-top:16px;color:var(--ink-2);max-width:62ch}
+  h3{font-family:var(--serif);font-weight:400;font-size:20px;margin-bottom:8px}
+
+  .tablewrap{margin-top:34px;border:1px solid var(--line);border-radius:3px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table{width:100%;border-collapse:collapse;min-width:520px;background:var(--panel)}
+  th,td{text-align:left;padding:15px 18px;border-bottom:1px solid var(--line);font-size:15.5px;vertical-align:top}
+  th{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);font-weight:500;background:var(--bg-2)}
+  tr:last-child td{border-bottom:0}
+  td.code{font-family:var(--serif);font-size:18px;color:var(--gold);letter-spacing:.06em;white-space:nowrap}
+  td.meaning{color:var(--ink)}
+  td.verdict{color:var(--ink-2);white-space:nowrap}
+  td.verdict.yes{color:#8fbf7a}
+  td.verdict.no{color:#c76b5e}
+
+  .callout{margin-top:30px;padding:22px 24px;background:var(--panel);border:1px solid var(--line);border-left:2px solid var(--gold);border-radius:2px}
+  .callout p{color:var(--ink-2);font-size:15.5px}
+  .callout p b{color:var(--ink)}
+  .callout .q{font-family:var(--serif);font-size:20px;line-height:1.45;color:var(--ink);font-style:italic;margin-bottom:12px}
+
+  .ladder{margin-top:34px;border-top:1px solid var(--line)}
+  .rung{display:flex;gap:20px;padding:22px 0;border-bottom:1px solid var(--line);align-items:flex-start;flex-wrap:wrap}
+  .rung .term{font-family:var(--serif);font-size:19px;color:var(--gold);flex:0 0 150px;letter-spacing:.02em}
+  .rung .def{flex:1 1 300px;color:var(--ink-2);font-size:15.5px;max-width:64ch}
+  .rung .def b{color:var(--ink);font-weight:600}
+
+  .grid{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:34px;border-radius:3px;overflow:hidden;grid-template-columns:repeat(auto-fit,minmax(258px,1fr))}
+  .cell{background:var(--panel);padding:26px 24px}
+  .cell p{color:var(--ink-2);font-size:15.5px}
+  .cell .n{font-size:11.5px;letter-spacing:.2em;color:var(--gold);margin-bottom:13px}
+
+  .checks{margin-top:34px;display:grid;gap:12px}
+  .check{display:flex;gap:14px;align-items:flex-start;padding:16px 18px;background:var(--panel);border:1px solid var(--line);border-radius:2px}
+  .check .tick{color:var(--gold);flex-shrink:0;font-size:14px;line-height:1.7}
+  .check p{font-size:15.5px;color:var(--ink-2)}
+  .check p b{color:var(--ink);font-weight:600}
+
+  .honest{background:var(--bg-2)}
+  .honest .wrap > p{color:var(--ink-2);max-width:64ch;margin-top:16px}
+
+  .close-cta{padding:76px 0;text-align:center;border-bottom:1px solid var(--line);background:radial-gradient(70% 100% at 50% 100%, rgba(201,169,97,.09) 0%, rgba(201,169,97,0) 70%)}
+  .close-cta h2{margin:0 auto;max-width:22ch}
+  .close-cta .sub{margin:16px auto 0}
+  .btnrow{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px;justify-content:center}
+  .btn{display:inline-block;text-decoration:none;font-size:14px;letter-spacing:.08em;text-transform:uppercase;padding:14px 26px;border-radius:2px;border:1px solid transparent;transition:all .18s}
+  .btn-primary{background:var(--gold);color:#0a0a0b;font-weight:600}
+  .btn-primary:hover{background:#dcbe79}
+  .btn-ghost{border-color:var(--line);color:var(--ink-2)}
+  .btn-ghost:hover{border-color:var(--ink-3);color:var(--ink)}
+
+  footer{padding:40px 0 56px;color:var(--ink-3);font-size:13.5px}
+  .foot{display:flex;flex-wrap:wrap;gap:16px 26px;justify-content:space-between;align-items:center}
+  .foot a{color:var(--ink-3);text-decoration:none}
+  .foot a:hover{color:var(--ink-2)}
+  .disclaimer{margin-top:22px;font-size:12.5px;color:#5c5a56;max-width:78ch;line-height:1.6}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="mark" href="index.html"><span class="dial"></span><span>Watch Cartel</span></a>
+    <nav class="navlinks">
+      <a class="hide-sm" href="index.html#how">How it works</a>
+      <a href="proof.html">Standards</a>
+      <a class="cta" href="apply.html">Apply</a>
+    </nav>
+  </div>
+</header>
+
+<div class="pagehead">
+  <div class="wrap">
+    <p class="eyebrow">Standards &amp; glossary</p>
+    <h1>Anyone can forward a listing. <em>Vetting</em> is the job.</h1>
+    <p class="lede">We do not have testimonials on this page and we are not going to invent any. What we can show you before you pay anything is the standard the desk works to — the vocabulary, the checks, and the one rule that never bends. If you trade at any volume you will recognise all of it, and you will know within a minute whether we are serious.</p>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <p class="sec-label">01 &middot; Intent codes</p>
+    <h2>Half the acronyms in a dealer room mean "I am not actually transacting."</h2>
+    <p class="sub">Getting this wrong does not produce a slightly worse answer. It produces a confident wrong price, because quote-chasing looks exactly like supply until you separate them.</p>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Code</th><th>Means</th><th>Counts as a real signal?</th></tr></thead>
+        <tbody>
+          <tr><td class="code">FS</td><td class="meaning">For sale</td><td class="verdict yes">Yes &mdash; real supply</td></tr>
+          <tr><td class="code">WTB</td><td class="meaning">Want to buy</td><td class="verdict yes">Yes &mdash; real demand</td></tr>
+          <tr><td class="code">LTB</td><td class="meaning">Looking to buy</td><td class="verdict yes">Yes &mdash; real demand</td></tr>
+          <tr><td class="code">ISO</td><td class="meaning">In search of</td><td class="verdict yes">Yes &mdash; relatively serious</td></tr>
+          <tr><td class="code">NTQ</td><td class="meaning">Need to quote</td><td class="verdict no">No &mdash; price chatter</td></tr>
+          <tr><td class="code">LTQ</td><td class="meaning">Looking to quote</td><td class="verdict no">No &mdash; price chatter</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <p><b>NTQ and LTQ are excluded from every price we calculate and every comparison we show you.</b> A dealer asking to be quoted is not a dealer selling. Count those two as listings and you inflate apparent supply, invent spreads that were never there, and end up quoting a market that does not exist.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="sec-label">02 &middot; Condition ladder</p>
+    <h2>These are not synonyms, and the gap between them is money.</h2>
+
+    <div class="ladder">
+      <div class="rung"><div class="term">BNIB</div><div class="def">Brand new in box. The top of the ladder and the only rung that means exactly what it says.</div></div>
+      <div class="rung"><div class="term">NOS</div><div class="def">New old stock. <b>Newer condition, but likely an older watch.</b> Condition and age are separate facts here and collapsing them into one is how a piece gets mispriced.</div></div>
+      <div class="rung"><div class="term">Like new</div><div class="def"><b>Could have markings.</b> Not BNIB. If a seller reaches for this phrase instead of BNIB, there is usually a reason and it is worth finding out what it is.</div></div>
+      <div class="rung"><div class="term">Retail ready</div><div class="def"><b>Polished to look better than it is.</b> May still carry marks. This is a presentation state, not a condition grade, and it should never be compared like-for-like against BNIB.</div></div>
+      <div class="rung"><div class="term">Fresh date</div><div class="def">Recently sold from the authorized dealer. Carries a premium. An old card date does not.</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="sec-label">03 &middot; What actually decides the number</p>
+    <h2>Two listings of the same reference are not the same asset.</h2>
+    <p class="sub">Price alone is not comparable. Every one of these moves it, and every one gets stated when we put a piece in front of you.</p>
+
+    <div class="grid">
+      <div class="cell"><p class="n">CONDITION</p><h3>Where it sits on the ladder</h3><p>Per the five rungs above, said out loud rather than implied.</p></div>
+      <div class="cell"><p class="n">ACCESSORIES</p><h3>Box, booklets, tags, card</h3><p>Green and white hang tags included. A full set is a different asset from a watch-only, not the same watch with a bonus.</p></div>
+      <div class="cell"><p class="n">CARD DATE</p><h3>When the AD originally sold it</h3><p>A fresh date is a premium. An old one is not. It is a fact about the paperwork, not about the condition.</p></div>
+      <div class="cell"><p class="n">SHIPPING RISK</p><h3>Whose label it moves on</h3><p>We pay the shipping and we use the seller's label &mdash; their label means the transit liability is theirs. That is a risk position, not a courtesy.</p></div>
+      <div class="cell"><p class="n">AFTERMARKET</p><h3>Confirmed original</h3><p>Bezel, dial, diamonds. Aftermarket parts change the asset entirely, so their absence is confirmed rather than assumed.</p></div>
+      <div class="cell"><p class="n">AUTHENTICITY</p><h3>Serials, papers, source</h3><p>Verified before anything is vouched for. We do not vouch for a watch on the strength of who forwarded it to us.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="sec-label">04 &middot; The hard rule</p>
+    <h2>The one that does not bend, for anyone, ever.</h2>
+
+    <div class="callout">
+      <p class="q">"Before offering a watch that isn't ours, it must be confirmed that it is available."</p>
+      <p>Listings in these rooms go stale in hours. Offering a watch that has already sold burns credibility in a market small enough that everyone talks &mdash; and you only get to do it once. So a match the desk finds is a <b>lead, not an offer</b>, until a human has confirmed with the holder that it is still there.</p>
+    </div>
+
+    <div class="checks">
+      <div class="check"><span class="tick">&#9679;</span><p><b>We under-promise on purpose.</b> The words are "I may be able to source a [reference] &mdash; let me confirm availability and come back to you." Never "I have it," when we do not control the watch.</p></div>
+      <div class="check"><span class="tick">&#9679;</span><p><b>Payment goes through a protected rail</b> where the deal warrants it, and we will tell you when we think it warrants it even though it slows the deal down.</p></div>
+      <div class="check"><span class="tick">&#9679;</span><p><b>No travel without a deposit, on either side.</b> Fronting your time and your inventory position is still fronting something you cannot recover.</p></div>
+      <div class="check"><span class="tick">&#9679;</span><p><b>Fees are agreed before the work starts</b>, in writing, per deal. You will never find out what this cost you at the end.</p></div>
+      <div class="check"><span class="tick">&#9679;</span><p><b>Nothing about your trade leaves the desk.</b> No names, no screenshots, no shopping your ask around the market with your identity attached to it.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="honest">
+  <div class="wrap">
+    <p class="sec-label">05 &middot; What we are not claiming</p>
+    <h2>The part most sites leave out.</h2>
+    <p>We are an independent desk, not an authorized dealer, and not affiliated with any manufacturer. We do not hold the whole market &mdash; we hold relationships inside part of it, and there will be references we cannot find for you. When that happens you will be told quickly rather than strung along, because your next best move is worth more to you than our next commission.</p>
+    <p>There are no member counts, deal totals or testimonials anywhere on this site. When there are numbers worth publishing, they will be real ones, and they will be dated.</p>
+  </div>
+</section>
+
+<div class="close-cta">
+  <div class="wrap">
+    <p class="sec-label">Next step</p>
+    <h2>If that reads like how you already work, apply.</h2>
+    <p class="sub">Two minutes, and a straight answer either way.</p>
+    <div class="btnrow">
+      <a class="btn btn-primary" href="apply.html">Apply for a seat</a>
+      <a class="btn btn-ghost" href="index.html">Back to the network</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>&copy; <span id="yr">2026</span> Watch Cartel &middot; itradetime.com</div>
+      <div style="display:flex;gap:20px;flex-wrap:wrap">
+        <a href="index.html">Home</a>
+        <a href="proof.html">Standards</a>
+        <a href="apply.html">Apply</a>
+        <a href="https://swatchstocks.com">Swatch Stocks</a>
+      </div>
+    </div>
+    <p class="disclaimer">Watch Cartel is an independent private trading network and brokerage. We are not an authorized dealer for, and are not affiliated with, sponsored by or endorsed by, any watch manufacturer or brand. Brand and reference names are used for identification only. Nothing on this site is an offer to sell a specific watch, a guarantee of availability, or investment advice.</p>
+  </div>
+</footer>
+
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>

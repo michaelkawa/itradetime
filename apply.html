@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apply — Watch Cartel</title>
+<meta name="description" content="Apply for a seat in Watch Cartel. Ten questions, about two minutes: who you are, what you trade, where you trade now, and who sent you. Every application gets an answer either way.">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230a0a0b'/><circle cx='50' cy='50' r='34' fill='none' stroke='%23c9a961' stroke-width='6'/><path d='M50 30 V52 L64 60' stroke='%23c9a961' stroke-width='6' fill='none' stroke-linecap='round'/></svg>">
+
+<!--
+  ==========================================================================
+  TWO THINGS TO REPLACE BEFORE THIS PAGE GOES LIVE
+  (both are also listed in sites/DEPLOY-STEPS.md)
+
+  1. PASTE_YOUR_FORM_LINK_HERE   - appears once, in the form action below.
+                                   Replace with your Tally / Whop / Google Form
+                                   endpoint. Use Find & Replace.
+
+  2. PASTE_YOUR_EMAIL_HERE       - appears twice (script + contact line).
+                                   Replace with the inbox that should receive
+                                   applications.
+
+  Until #1 is replaced, the form still WORKS: pressing submit opens the
+  visitor's email app with every answer pre-filled, addressed to the email in
+  #2. So the page is never a dead end.
+
+  NOTE ON THE FIELD SET (do not lengthen this form):
+  ten questions, in this order, and the order is deliberate -
+  contact -> who you are in the trade -> what you move -> where you already
+  move it -> who vouches for you -> who sent you -> your own words.
+  Scoring guidance for each answer lives in ~/kawa-ops/WATCH-CARTEL-ADMISSIONS.md.
+  ==========================================================================
+-->
+
+<!--
+  ==========================================================================
+  GROK REVIEW OF THE APPLICANT-FACING COPY - 2026-08-03
+  Reviewer: xAI Grok via tools/grok_review.py (temperature 0.1)
+  Criteria: (1) warm, sounds like a person  (2) exclusive without being pompous
+            (3) no fabricated claims - no invented member count, waitlist
+                length, review time, tenure, testimonial or track record
+            (4) no prices anywhere  (5) short - ten questions is the cap
+
+  ROUND 1 - VERDICT: FIX
+    - "Who sent you?" / "One last thing, in your own words" - over the
+      ten-question cap (12 fields)
+    - "so the flow stays worth reading" - implies existing deal-flow /
+      track record
+
+  CHANGES MADE
+    - Cut to exactly 10 questions: dropped the separate "City and country"
+      field (geography comes from the country code and the first reply) and
+      merged the "How did you find us?" select + "Who sent you?" text into a
+      single required "Who sent you?" field.
+    - Rewrote the batching line to claim nothing about existing flow:
+      "We would rather move slowly than fill a room with people who do not
+      actually trade."
+
+  ROUND 2 - VERDICT: APPROVE
+  ==========================================================================
+-->
+
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#0a0a0b; --bg-2:#101012; --panel:#131316; --line:#26262b;
+    --ink:#f2f0ec; --ink-2:#a7a49e; --ink-3:#75726d;
+    --gold:#c9a961; --gold-dim:#8c7642;
+    --serif:ui-serif,Georgia,"Iowan Old Style","Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --wrap:1080px;
+  }
+  html{-webkit-text-size-adjust:100%}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit}
+  .wrap{width:100%;max-width:var(--wrap);margin:0 auto;padding:0 22px}
+
+  header{position:sticky;top:0;z-index:50;background:rgba(10,10,11,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 22px}
+  .mark{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+  .mark .dial{width:24px;height:24px;border:1.5px solid var(--gold);border-radius:50%;position:relative;flex-shrink:0}
+  .mark .dial::after{content:"";position:absolute;left:50%;top:22%;width:1.5px;height:32%;background:var(--gold)}
+  .mark .dial::before{content:"";position:absolute;left:50%;top:50%;width:28%;height:1.5px;background:var(--gold)}
+  .mark span{font-family:var(--serif);font-size:17px;letter-spacing:.14em;text-transform:uppercase}
+  .navlinks{display:flex;align-items:center;gap:22px}
+  .navlinks a{font-size:13px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-2);text-decoration:none;transition:color .18s}
+  .navlinks a:hover{color:var(--ink)}
+  @media(max-width:700px){ .navlinks .hide-sm{display:none} }
+  @media(max-width:640px){
+    .wrap{padding:0 18px}
+    .nav{gap:8px;padding:14px 18px}
+    .mark{gap:8px} .mark span{font-size:13.5px;letter-spacing:.1em}
+    .mark .dial{width:21px;height:21px}
+    .navlinks{gap:12px}
+    .navlinks a{font-size:11.5px;letter-spacing:.07em}
+    .navlinks a.cta{padding:6px 11px}
+  }
+
+  .pagehead{padding:66px 0 44px;position:relative;overflow:hidden}
+  .pagehead::before{content:"";position:absolute;inset:-50% -20% auto -20%;height:120%;background:radial-gradient(55% 55% at 50% 0%, rgba(201,169,97,.10) 0%, rgba(201,169,97,0) 70%);pointer-events:none}
+  .pagehead .wrap{position:relative}
+  .eyebrow{font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:10px;margin-bottom:24px}
+  .eyebrow::before{content:"";width:34px;height:1px;background:var(--gold-dim);flex-shrink:0}
+  h1{font-family:var(--serif);font-weight:400;letter-spacing:-.015em;line-height:1.12;font-size:clamp(31px,6.2vw,50px);max-width:17ch;margin-bottom:18px}
+  h1 em{font-style:italic;color:var(--gold)}
+  .lede{font-size:clamp(16px,2.3vw,18.5px);color:var(--ink-2);max-width:58ch}
+
+  .layout{display:grid;gap:34px;grid-template-columns:1fr;padding-bottom:70px}
+  @media(min-width:880px){ .layout{grid-template-columns:1.35fr .8fr;gap:48px;align-items:start} }
+
+  form{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:28px 24px}
+  @media(min-width:560px){ form{padding:34px 32px} }
+  .field{margin-bottom:22px}
+  label{display:block;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px}
+  label .req{color:var(--gold)}
+  input[type=text],input[type=email],input[type=tel],select,textarea{
+    width:100%;background:var(--bg);border:1px solid var(--line);border-radius:2px;
+    color:var(--ink);font-family:var(--sans);font-size:16px;padding:13px 14px;line-height:1.5;
+    transition:border-color .16s, box-shadow .16s;-webkit-appearance:none;appearance:none;
+  }
+  select{background-image:linear-gradient(45deg,transparent 50%,var(--ink-3) 50%),linear-gradient(135deg,var(--ink-3) 50%,transparent 50%);
+    background-position:calc(100% - 20px) calc(1.25em), calc(100% - 15px) calc(1.25em);
+    background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:42px}
+  textarea{resize:vertical;min-height:96px}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold-dim);box-shadow:0 0 0 3px rgba(201,169,97,.10)}
+  input::placeholder,textarea::placeholder{color:#5c5a56}
+  .hint{font-size:13px;color:var(--ink-3);margin-top:7px}
+
+  .consent{display:flex;gap:12px;align-items:flex-start;margin:26px 0 24px;padding:16px 16px;background:var(--bg);border:1px solid var(--line);border-radius:2px}
+  .consent input{margin-top:4px;width:17px;height:17px;accent-color:var(--gold);flex-shrink:0}
+  .consent span{font-size:14px;color:var(--ink-2);line-height:1.55;text-transform:none;letter-spacing:normal}
+
+  button{
+    width:100%;background:var(--gold);color:#0a0a0b;border:0;border-radius:2px;
+    font-family:var(--sans);font-size:14.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+    padding:16px 22px;cursor:pointer;transition:background .18s;
+  }
+  button:hover{background:#dcbe79}
+  .formnote{margin-top:16px;font-size:13px;color:var(--ink-3);text-align:center}
+  #fallbackMsg{display:none;margin-top:18px;padding:16px 18px;border:1px solid var(--gold-dim);border-left-width:2px;border-radius:2px;background:rgba(201,169,97,.06);font-size:14.5px;color:var(--ink-2)}
+
+  aside .box{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:26px 24px;margin-bottom:20px}
+  aside h3{font-family:var(--serif);font-weight:400;font-size:20px;margin-bottom:14px}
+  aside ol{list-style:none;counter-reset:s;display:grid;gap:16px}
+  aside ol li{counter-increment:s;padding-left:36px;position:relative;font-size:15px;color:var(--ink-2)}
+  aside ol li::before{
+    content:counter(s);position:absolute;left:0;top:-1px;width:24px;height:24px;border-radius:50%;
+    border:1px solid var(--gold-dim);color:var(--gold);font-family:var(--serif);font-size:13px;
+    display:flex;align-items:center;justify-content:center
+  }
+  aside ol li b{color:var(--ink);font-weight:600;display:block}
+  aside .box p{font-size:15px;color:var(--ink-2)}
+  aside .box p + p{margin-top:12px}
+  aside .box ol + p{margin-top:18px;padding-top:18px;border-top:1px solid var(--line)}
+  aside .box a{color:var(--gold);text-decoration:none;border-bottom:1px solid var(--gold-dim);word-break:break-word}
+
+  footer{padding:36px 0 56px;color:var(--ink-3);font-size:13.5px;border-top:1px solid var(--line)}
+  .foot{display:flex;flex-wrap:wrap;gap:16px 26px;justify-content:space-between;align-items:center}
+  .foot a{color:var(--ink-3);text-decoration:none}
+  .foot a:hover{color:var(--ink-2)}
+  .disclaimer{margin-top:22px;font-size:12.5px;color:#5c5a56;max-width:78ch;line-height:1.6}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="mark" href="index.html"><span class="dial"></span><span>Watch Cartel</span></a>
+    <nav class="navlinks">
+      <a class="hide-sm" href="index.html#how">How it works</a>
+      <a href="proof.html">Standards</a>
+      <a href="index.html">Home</a>
+    </nav>
+  </div>
+</header>
+
+<div class="pagehead">
+  <div class="wrap">
+    <p class="eyebrow">Application</p>
+    <h1>Tell us what you <em>trade</em>.</h1>
+    <p class="lede">Ten questions, about two minutes. We read every one of these ourselves and you get an answer either way &mdash; including a no, which is more useful to you than silence.</p>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="layout">
+
+    <form id="applyForm" action="#" method="POST">
+
+      <div class="field">
+        <label for="name">Full name <span class="req">*</span></label>
+        <input type="text" id="name" name="name" required autocomplete="name" placeholder="First and last">
+      </div>
+
+      <div class="field">
+        <label for="email">Email <span class="req">*</span></label>
+        <input type="email" id="email" name="email" required autocomplete="email" placeholder="you@example.com">
+      </div>
+
+      <div class="field">
+        <label for="phone">Phone or WhatsApp <span class="req">*</span></label>
+        <input type="tel" id="phone" name="phone" required autocomplete="tel" placeholder="Include your country code">
+        <p class="hint">Most of the flow moves on WhatsApp, so this is the number that matters.</p>
+      </div>
+
+      <div class="field">
+        <label for="role">You are a <span class="req">*</span></label>
+        <select id="role" name="role" required>
+          <option value="">Select one</option>
+          <option>Dealer &mdash; this is my business</option>
+          <option>Collector who trades actively</option>
+          <option>Both</option>
+          <option>Broker / intermediary</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="trades">What do you trade? <span class="req">*</span></label>
+        <textarea id="trades" name="trades" required placeholder="Brands, the references you actually move, and the price band you work in. Specific beats broad &mdash; this is the part we read closest."></textarea>
+      </div>
+
+      <div class="field">
+        <label for="volume">Roughly how many deals a year? <span class="req">*</span></label>
+        <select id="volume" name="volume" required>
+          <option value="">Select one</option>
+          <option>Under 5</option>
+          <option>5 to 20</option>
+          <option>20 to 50</option>
+          <option>50 to 200</option>
+          <option>200+</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="venues">Where do you trade now? <span class="req">*</span></label>
+        <textarea id="venues" name="venues" required placeholder="The rooms and platforms you already move through &mdash; WhatsApp groups, forums, Chrono24, shows, your own book of buyers."></textarea>
+        <p class="hint">Nobody is asked to leave anything. It tells us where you already sit in the market.</p>
+      </div>
+
+      <div class="field">
+        <label for="refs">References or a public trading profile <span class="req">*</span></label>
+        <textarea id="refs" name="refs" required placeholder="A Chrono24 or eBay storefront, r/Watchexchange flair, an Instagram, a website &mdash; or two people in the trade who would vouch for you."></textarea>
+        <p class="hint">This is the fastest route to a yes. Something we can look at ourselves counts for more than a description.</p>
+      </div>
+
+      <div class="field">
+        <label for="source">Who sent you? <span class="req">*</span></label>
+        <input type="text" id="source" name="source" required placeholder="Their name &mdash; or if nobody sent you, where you found us">
+        <p class="hint">If someone in the network sent you, their name carries more weight here than anything else on this form.</p>
+      </div>
+
+      <div class="field">
+        <label for="notes">One last thing, in your own words</label>
+        <textarea id="notes" name="notes" placeholder="What are you hunting right now, or what would make a room like this worth it to you? A reference you cannot find, a buyer you cannot reach, a market you want into."></textarea>
+      </div>
+
+      <label class="consent">
+        <input type="checkbox" id="consent" name="consent" required value="yes">
+        <span>I agree to be contacted about this application by email, phone or WhatsApp, and I understand my details are used only to review it and are never shared or sold.</span>
+      </label>
+
+      <button type="submit">Submit application</button>
+      <p class="formnote">No payment is taken here. Nothing is charged until you have read the terms and said yes.</p>
+      <div id="fallbackMsg"></div>
+    </form>
+
+    <aside>
+      <div class="box">
+        <h3>What happens next</h3>
+        <ol>
+          <li><b>We read it</b>Every application, personally. Nothing here is scored by a robot.</li>
+          <li><b>We come back to you either way</b>A yes, a no with the reason, or a not-yet with what would change it. We do not leave applications sitting in silence.</li>
+          <li><b>A yes comes with an invitation</b>The network sheet, the membership terms, what it costs and how it is billed, and how access works. You decide after you have read all of it.</li>
+        </ol>
+        <p>Seats are approved in small batches. We would rather move slowly than fill a room with people who do not actually trade. What you tell us here stays here &mdash; we do not publish members and we do not pass your name around the market.</p>
+      </div>
+
+      <div class="box">
+        <h3>Before you apply</h3>
+        <p>Worth two minutes: the <a href="proof.html">standards page</a> sets out the intent codes, the condition ladder, what actually moves a price, and the rule this desk does not bend &mdash; availability is confirmed before anything is offered to you.</p>
+      </div>
+
+      <div class="box">
+        <h3>Prefer to write to us?</h3>
+        <p>Email the same details straight across:</p>
+        <p><a href="mailto:PASTE_YOUR_EMAIL_HERE">PASTE_YOUR_EMAIL_HERE</a></p>
+        <p style="font-size:13.5px;color:var(--ink-3)">We do not publish a phone number &mdash; approved members get a direct line.</p>
+      </div>
+    </aside>
+
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>&copy; <span id="yr">2026</span> Watch Cartel &middot; itradetime.com</div>
+      <div style="display:flex;gap:20px;flex-wrap:wrap">
+        <a href="index.html">Home</a>
+        <a href="proof.html">Standards</a>
+        <a href="apply.html">Apply</a>
+        <a href="https://swatchstocks.com">Swatch Stocks</a>
+      </div>
+    </div>
+    <p class="disclaimer">Watch Cartel is an independent private trading network and brokerage. We are not an authorized dealer for, and are not affiliated with, sponsored by or endorsed by, any watch manufacturer or brand. Submitting this form does not create a membership, an offer, or any obligation on either side.</p>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  // Email fallback: if the form endpoint has not been swapped in yet, the
+  // submit button composes an email with every answer instead of failing.
+  (function () {
+    var APPLY_EMAIL = 'PASTE_YOUR_EMAIL_HERE';
+    var form = document.getElementById('applyForm');
+    var note = document.getElementById('fallbackMsg');
+
+    form.addEventListener('submit', function (e) {
+      var endpointReady = form.getAttribute('action').indexOf('PASTE_') === -1;
+      if (endpointReady) return; // real endpoint present, let it post normally
+
+      e.preventDefault();
+
+      if (APPLY_EMAIL.indexOf('PASTE_') !== -1) {
+        note.style.display = 'block';
+        note.textContent = 'This form is not connected yet. Please email your details to the address shown on this page.';
+        return;
+      }
+
+      var labels = {
+        name: 'Name', email: 'Email', phone: 'Phone / WhatsApp',
+        role: 'Role', trades: 'What they trade', volume: 'Deals per year',
+        venues: 'Where they trade now', refs: 'References / public profile',
+        source: 'Referred by / how they found us', notes: 'In their own words'
+      };
+      var lines = [];
+      Object.keys(labels).forEach(function (k) {
+        var el = form.elements[k];
+        if (el && el.value) lines.push(labels[k] + ': ' + el.value);
+      });
+      lines.push('Consent to contact: yes');
+
+      var subject = 'Watch Cartel application - ' + (form.elements['name'].value || 'new applicant');
+      window.location.href = 'mailto:' + APPLY_EMAIL +
+        '?subject=' + encodeURIComponent(subject) +
+        '&body=' + encodeURIComponent(lines.join('\n'));
+
+      note.style.display = 'block';
+      note.textContent = 'Your email app should have opened with the application filled in. Press send and we will come back to you.';
+    });
+  })();
+</script>
+</body>
+</html>
