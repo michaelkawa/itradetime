@@ -13,17 +13,35 @@
   TWO THINGS TO REPLACE BEFORE THIS PAGE GOES LIVE
   (both are also listed in sites/DEPLOY-STEPS.md)
 
-  1. PASTE_YOUR_FORM_LINK_HERE   - appears once, in the form action below.
-                                   Replace with your Tally / Whop / Google Form
-                                   endpoint. Use Find & Replace.
+  1. The form action (near the <form> tag below) - set it to a real Tally /
+     Whop / Google Form endpoint once one exists. Leave it as "#" until then.
 
-  2. PASTE_YOUR_EMAIL_HERE       - appears twice (script + contact line).
-                                   Replace with the inbox that should receive
-                                   applications.
+  2. APPLY_EMAIL - ONE declaration, in the <script> near the bottom of this
+     file. Replace 'PASTE_YOUR_EMAIL_HERE' with the inbox that should receive
+     applications. Everything visitor-facing (the "write to us" link in the
+     aside box) is rendered FROM that one JS constant, not hardcoded twice -
+     change it in one place and both update.
 
   Until #1 is replaced, the form still WORKS: pressing submit opens the
   visitor's email app with every answer pre-filled, addressed to the email in
   #2. So the page is never a dead end.
+
+  FIX 2026-08-18 (Claude, local edit only, not deployed): the detection that
+  decides "is a real endpoint wired up yet" used to check ONLY for the
+  literal string "PASTE_" in the action attribute. Someone had already
+  changed the action to "#" without wiring a real endpoint - "#" does not
+  contain "PASTE_", so the old check thought the endpoint was ready, let the
+  browser POST to "#" (i.e. nowhere - a static file has no backend), and the
+  page just silently reloaded with every typed answer discarded. No error,
+  no confirmation, no mailto fallback. Fixed by also treating "" and "#" as
+  "not ready." Also: no real destination email exists anywhere in this repo
+  for this business (grepped WATCH-CARTEL-*.md, DEPLOY-STEPS.md,
+  index.html's own CONTACT_EMAIL_TBD placeholders) - APPLY_EMAIL below is
+  still the placeholder, on purpose, pending Michael naming the inbox
+  (mike@usa.com, or a new apply@itradetime.com mailbox in the Namecheap
+  Private Email account that is provisioned but not yet created). Until he
+  does, submitting shows an explicit "not connected yet" message instead of
+  failing silently - see /Users/michaelkawa/kawa-ops/data/funnel-fix-2026-08-18.md.
 
   NOTE ON THE FIELD SET (do not lengthen this form):
   ten questions, in this order, and the order is deliberate -
@@ -260,7 +278,8 @@
         <span>I agree to be contacted about this application by email, phone or WhatsApp, and I understand my details are used only to review it and are never shared or sold.</span>
       </label>
 
-      <button type="submit">Submit application</button>
+      <button type="submit" id="submitBtn">Submit application</button>
+      <p class="formnote" id="submitHint">Checking how this form is connected&hellip;</p>
       <p class="formnote">No payment is taken here. Nothing is charged until you have read the terms and said yes.</p>
       <div id="fallbackMsg"></div>
     </form>
@@ -284,7 +303,7 @@
       <div class="box">
         <h3>Prefer to write to us?</h3>
         <p>Email the same details straight across:</p>
-        <p><a href="mailto:PASTE_YOUR_EMAIL_HERE">PASTE_YOUR_EMAIL_HERE</a></p>
+        <p><a href="#" id="applyEmailLink">Checking&hellip;</a></p>
         <p style="font-size:13.5px;color:var(--ink-3)">We do not publish a phone number &mdash; approved members get a direct line.</p>
       </div>
     </aside>
@@ -312,18 +331,54 @@
 
   // Email fallback: if the form endpoint has not been swapped in yet, the
   // submit button composes an email with every answer instead of failing.
+  //
+  // APPLY_EMAIL is declared ONCE, here. The "write to us" link in the aside
+  // box is rendered from this same constant below - there is no second
+  // copy of the address anywhere else in this file to fall out of sync.
   (function () {
-    var APPLY_EMAIL = 'PASTE_YOUR_EMAIL_HERE';
+    var APPLY_EMAIL = 'mike@usa.com'; // set 2026-08-20 (Michael's main inbox; swap to apply@thewatchcartel.com when domain forwarding exists)
     var form = document.getElementById('applyForm');
     var note = document.getElementById('fallbackMsg');
+    var hint = document.getElementById('submitHint');
+    var emailLink = document.getElementById('applyEmailLink');
+
+    // "" and "#" both mean "no real endpoint" - a bare "#" used to slip
+    // past this check (it doesn't contain "PASTE_") and let the browser
+    // silently POST to the current page, discarding every answer. Fixed
+    // 2026-08-18.
+    var rawAction = (form.getAttribute('action') || '').trim();
+    var endpointReady = rawAction !== '' && rawAction !== '#' && rawAction.indexOf('PASTE_') === -1;
+    var emailReady = APPLY_EMAIL.indexOf('PASTE_') === -1;
+
+    // Render the aside "write to us" link from the single email source.
+    if (emailLink) {
+      if (emailReady) {
+        emailLink.href = 'mailto:' + APPLY_EMAIL;
+        emailLink.textContent = APPLY_EMAIL;
+      } else {
+        emailLink.removeAttribute('href');
+        emailLink.textContent = 'Email address not live yet — use the form instead';
+      }
+    }
+
+    // Tell the visitor, before they click, what pressing the button will
+    // actually do - so nobody is left guessing whether it worked.
+    if (hint) {
+      if (endpointReady) {
+        hint.textContent = 'Submitting sends your answers directly — you’ll see a confirmation below.';
+      } else if (emailReady) {
+        hint.textContent = 'Submitting opens your email app with your answers filled in — press send there to finish.';
+      } else {
+        hint.textContent = 'This form isn’t fully connected yet — submitting will tell you exactly what to do next. Nothing you type is lost silently.';
+      }
+    }
 
     form.addEventListener('submit', function (e) {
-      var endpointReady = form.getAttribute('action').indexOf('PASTE_') === -1;
       if (endpointReady) return; // real endpoint present, let it post normally
 
       e.preventDefault();
 
-      if (APPLY_EMAIL.indexOf('PASTE_') !== -1) {
+      if (!emailReady) {
         note.style.display = 'block';
         note.textContent = 'This form is not connected yet. Please email your details to the address shown on this page.';
         return;
