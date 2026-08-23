@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cross-post caption generator — Watch Cartel (internal)</title>
+<meta name="robots" content="noindex">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#0a0a0b; --panel:#131316; --line:#26262b;
+    --ink:#f2f0ec; --ink-2:#a7a49e; --ink-3:#75726d;
+    --gold:#c9a961; --gold-dim:#8c7642;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;
+    padding:40px 20px 80px}
+  .w{max-width:640px;margin:0 auto}
+  .mono{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+  h1{font-size:24px;margin-bottom:6px}
+  .lede{color:var(--ink-2);font-size:14.5px;margin-bottom:30px}
+  label{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--ink-2);margin:16px 0 6px}
+  input,select{width:100%;background:var(--panel);border:1px solid var(--line);color:var(--ink);
+    padding:11px 12px;border-radius:6px;font-size:15px;font-family:inherit}
+  input:focus,select:focus{outline:1px solid var(--gold-dim)}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .out{margin-top:26px;background:var(--panel);border:1px solid var(--line);border-radius:10px;
+    padding:18px 20px}
+  .out h2{font-size:13px;letter-spacing:.05em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+  .out pre{white-space:pre-wrap;word-break:break-word;font-family:inherit;font-size:14.5px;color:var(--ink)}
+  .note{font-size:12.5px;color:var(--ink-3);margin-top:8px}
+  .warn{font-size:12.5px;color:#c98a61;margin-top:8px}
+  button{margin-top:8px;background:transparent;border:1px solid var(--gold-dim);color:var(--gold);
+    padding:8px 14px;border-radius:6px;font-size:13px;cursor:pointer}
+  button:hover{background:var(--gold);color:#0a0a0b}
+  .foot{margin-top:34px;color:var(--ink-3);font-size:12.5px}
+  .foot a{color:var(--ink-3)}
+</style>
+</head>
+<body>
+<div class="w">
+  <div class="mono">Internal tool · not linked from the public site</div>
+  <h1>Cross-post caption generator</h1>
+  <p class="lede">Fills in the platform-specific template from
+  <code>docs/crosspost-playbook.md</code> and a UTM-tagged link. Only use this
+  for watches actually in hand or confirmed WTB requests — never a
+  placeholder. See <code>docs/marketplace-posting-rules.md</code> for why.</p>
+
+  <label for="platform">Platform</label>
+  <select id="platform">
+    <option value="watchuseek">WatchUSeek / Omega Forums / Rolex Forums (post body)</option>
+    <option value="reddit">Reddit r/Watchexchange (no link — self-promo risk)</option>
+    <option value="instagram">Instagram / TikTok (caption, link in bio)</option>
+    <option value="ebay">eBay (no mention — Links Policy forbids it)</option>
+  </select>
+
+  <label for="kind">Post type</label>
+  <select id="kind">
+    <option value="fs">For sale (in hand now)</option>
+    <option value="wtb">WTB / sourcing request (not in hand)</option>
+  </select>
+
+  <div class="row">
+    <div>
+      <label for="ref">Reference / model</label>
+      <input id="ref" placeholder="e.g. 126610LN">
+    </div>
+    <div>
+      <label for="cond">Condition / set</label>
+      <input id="cond" placeholder="e.g. full set, unpolished">
+    </div>
+  </div>
+
+  <label for="campaign">UTM campaign tag</label>
+  <input id="campaign" value="sourcing">
+
+  <button onclick="generate()">Generate</button>
+
+  <div class="out" id="out" style="display:none">
+    <h2>Caption</h2>
+    <pre id="caption"></pre>
+    <div class="note" id="linknote"></div>
+    <div class="warn" id="warn" style="display:none"></div>
+  </div>
+
+  <div class="foot">
+    Templates and rules: <a href="../docs/crosspost-playbook.md">crosspost-playbook.md</a>
+    · <a href="../docs/marketplace-posting-rules.md">marketplace-posting-rules.md</a>
+  </div>
+</div>
+
+<script>
+function utmLink(source, campaign){
+  return "https://thewatchcartel.com/?utm_source=" + encodeURIComponent(source) +
+    "&utm_medium=crosspost&utm_campaign=" + encodeURIComponent(campaign || "sourcing");
+}
+
+function generate(){
+  var platform = document.getElementById('platform').value;
+  var kind = document.getElementById('kind').value;
+  var ref = document.getElementById('ref').value.trim() || "[ref]";
+  var cond = document.getElementById('cond').value.trim() || "[condition]";
+  var campaign = document.getElementById('campaign').value.trim() || "sourcing";
+  var out = document.getElementById('out');
+  var captionEl = document.getElementById('caption');
+  var linknote = document.getElementById('linknote');
+  var warnEl = document.getElementById('warn');
+  var caption = "";
+  var note = "";
+  var warn = "";
+
+  if (kind === "wtb") {
+    caption = "WTB — " + ref + " (" + cond + "). Sourcing for a member through " +
+      "The Watch Cartel dealer network — DM if you can quote it.";
+  }
+
+  if (platform === "watchuseek") {
+    if (kind === "fs") {
+      caption = ref + " — " + cond + " — sourced through The Watch Cartel dealer " +
+        "network. thewatchcartel.com for how the sourcing works.";
+    }
+    note = "Link in post body only — never in your signature or profile (forum rule). " +
+      "Requires an account 90+ days old with 100+ discussion-forum posts to post in Sales Corner.";
+  } else if (platform === "reddit") {
+    caption = caption.replace(/\s*thewatchcartel\.com.*$/i, "").replace(
+      / — sourced through The Watch Cartel dealer network\./,
+      "."
+    );
+    warn = "No link and no business mention here — r/Watchexchange treats this as " +
+      "self-promotion/spam. Post as a plain personal trade or don't post.";
+  } else if (platform === "instagram") {
+    caption += " Link in bio for how sourcing works — thewatchcartel.com";
+    note = "Put the UTM link in the bio/link-in-bio tool, not as clickable text in the caption.";
+  } else if (platform === "ebay") {
+    caption = "(no listing text change — do not add any Watch Cartel mention or link " +
+      "to an eBay listing; this violates eBay's Links Policy even as plain text.)";
+    warn = "Do not post this on eBay. Nothing generated here is usable in an eBay listing.";
+  }
+
+  captionEl.textContent = caption;
+  linknote.textContent = (note ? note + " " : "") + "UTM link: " + utmLink(platform, campaign);
+  if (warn) { warnEl.textContent = warn; warnEl.style.display = "block"; }
+  else { warnEl.style.display = "none"; }
+  out.style.display = "block";
+}
+</script>
+</body>
+</html>
